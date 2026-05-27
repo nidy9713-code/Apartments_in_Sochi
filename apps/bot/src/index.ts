@@ -28,7 +28,7 @@ const stage = new Scenes.Stage<Scenes.SceneContext>([
   editFaqWizard, 
   editAptWizard, 
   editAboutWizard
-]);
+] as any);
 
 // Middleware
 bot.use(session());
@@ -94,9 +94,9 @@ bot.action('admin_bookings', async (ctx) => {
   let text = '📅 *Последние 10 заявок:*\n\n';
   bookings.forEach((b, i) => {
     text += `${i + 1}. *${b.apartment.name}*\n`;
-    text += `👤 ${b.guestName} (${b.guestPhone})\n`;
-    text += `📅 ${b.checkIn.toLocaleDateString()} - ${b.checkOut.toLocaleDateString()}\n`;
-    text += `👥 Гостей: ${b.guestsCount}\n`;
+    text += `👤 ${b.name} (${b.phone})\n`;
+    text += `📅 ${b.dates}\n`;
+    text += `💬 Комментарий: ${b.comment || 'нет'}\n`;
     text += `🕒 Создана: ${b.createdAt.toLocaleString()}\n\n`;
   });
 
