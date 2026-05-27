@@ -1,13 +1,13 @@
 import { Telegraf, Context, Scenes, session, Markup } from 'telegraf';
 import * as dotenv from 'dotenv';
-import { mainKeyboard, contactKeyboard } from './keyboards/main.keyboard';
-import { adminKeyboard, adminAptsKeyboard, adminFaqKeyboard } from './keyboards/admin.keyboard';
-import { prisma } from './services/prisma.service';
-import { bookingWizard } from './scenes/booking.scene';
-import { addFaqWizard } from './scenes/addFaq.scene';
-import { editFaqWizard } from './scenes/editFaq.scene';
-import { editAptWizard } from './scenes/editApt.scene';
-import { editAboutWizard } from './scenes/editAbout.scene';
+import { mainKeyboard, contactKeyboard } from './keyboards/main.keyboard.js';
+import { adminKeyboard, adminAptsKeyboard, adminFaqKeyboard } from './keyboards/admin.keyboard.js';
+import { prisma } from './services/prisma.service.js';
+import { bookingWizard } from './scenes/booking.scene.js';
+import { addFaqWizard } from './scenes/addFaq.scene.js';
+import { editFaqWizard } from './scenes/editFaq.scene.js';
+import { editAptWizard } from './scenes/editApt.scene.js';
+import { editAboutWizard } from './scenes/editAbout.scene.js';
 
 dotenv.config();
 

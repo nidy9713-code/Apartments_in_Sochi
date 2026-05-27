@@ -1,5 +1,5 @@
 import { Scenes, Markup } from 'telegraf';
-import { prisma } from '../services/prisma.service';
+import { prisma } from '../services/prisma.service.js';
 
 export const editAboutWizard = new Scenes.WizardScene(
   'edit_about_wizard',
