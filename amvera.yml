@@ -1,8 +1,5 @@
 meta:
-  environment: node
-  toolchain:
-    name: npm
-    version: 18
+  environment: docker
 build:
   dockerfile: apps/bot/Dockerfile
 run:
