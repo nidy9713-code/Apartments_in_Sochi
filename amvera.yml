@@ -3,7 +3,3 @@ meta:
   toolchain:
     name: docker
     version: latest
-run:
-  persistence:
-    - mountPath: /app/data
-      name: data
