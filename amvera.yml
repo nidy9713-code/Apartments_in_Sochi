@@ -1,0 +1,11 @@
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: 18
+build:
+  dockerfile: apps/bot/Dockerfile
+run:
+  persistence:
+    - mountPath: /app/data
+      name: data
