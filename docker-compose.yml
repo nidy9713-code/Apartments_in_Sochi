@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sochi_booking
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  bot:
+    build:
+      context: .
+      dockerfile: apps/bot/Dockerfile
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sochi_booking?schema=public
+      BOT_TOKEN: ${BOT_TOKEN}
+      MANAGER_TELEGRAM: ${MANAGER_TELEGRAM}
+      MANAGER_PHONE: ${MANAGER_PHONE}
+    depends_on:
+      - db
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/sochi_booking?schema=public
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

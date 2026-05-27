@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Apartment {
+  id               String   @id @default(cuid())
+  name             String
+  description      String
+  shortDescription String
+  capacity         Int
+  photos           String[]
+  homeReserveUrl   String?
+  websiteUrl       String?
+  details          Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  bookings         Booking[]
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id          String    @id @default(cuid())
+  name        String
+  phone       String
+  apartmentId String
+  apartment   Apartment @relation(fields: [apartmentId], references: [id])
+  dates       String // Can be a range string or start/end dates
+  comment     String?
+  status      String    @default("pending") // pending, confirmed, cancelled
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Setting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
