@@ -61,8 +61,8 @@ export const bookingWizard = new Scenes.WizardScene(
       await ctx.reply('✅ Спасибо! Ваша заявка принята. Менеджер свяжется с вами в ближайшее время.');
       
       // Notify manager
-      const managerId = process.env.MANAGER_ID;
-      if (managerId) {
+      const managerIds = process.env.MANAGER_ID?.split(',').map(id => id.trim()) || [];
+      if (managerIds.length > 0) {
         const notificationText = `🔔 *Новая заявка на бронирование!*\n\n` +
           `👤 Имя: ${booking.name}\n` +
           `📱 Телефон: ${booking.phone}\n` +
@@ -71,7 +71,11 @@ export const bookingWizard = new Scenes.WizardScene(
           `💬 Комментарий: ${booking.comment || 'нет'}\n` +
           `🕒 Время: ${booking.createdAt.toLocaleString()}`;
         
-        await ctx.telegram.sendMessage(managerId, notificationText, { parse_mode: 'Markdown' });
+        for (const id of managerIds) {
+          await ctx.telegram.sendMessage(id, notificationText, { parse_mode: 'Markdown' }).catch(err => {
+            console.error(`Failed to send notification to ${id}:`, err);
+          });
+        }
       }
       
       console.log(`New booking: ${booking.id} for ${booking.apartment.name}`);

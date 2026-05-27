@@ -227,14 +227,18 @@ bot.on('text', async (ctx, next) => {
 
   // Forward other messages to manager if not a command
   if (!ctx.message.text.startsWith('/')) {
-    const managerId = process.env.MANAGER_ID;
-    if (managerId && ctx.from) {
+    const managerIds = process.env.MANAGER_ID?.split(',').map(id => id.trim()) || [];
+    if (managerIds.length > 0 && ctx.from) {
       const forwardText = `📨 *Новое сообщение от пользователя!*\n\n` +
         `👤 Имя: ${ctx.from.first_name} ${ctx.from.last_name || ''}\n` +
         `🆔 ID: ${ctx.from.id}\n` +
         `💬 Сообщение: ${ctx.message.text}`;
       
-      await ctx.telegram.sendMessage(managerId, forwardText, { parse_mode: 'Markdown' });
+      for (const id of managerIds) {
+        await ctx.telegram.sendMessage(id, forwardText, { parse_mode: 'Markdown' }).catch(err => {
+          console.error(`Failed to forward message to ${id}:`, err);
+        });
+      }
       await ctx.reply('Ваше сообщение отправлено менеджеру. Мы свяжемся с вами в ближайшее время!');
     }
   }
