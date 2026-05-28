@@ -478,8 +478,16 @@ bot.action(/faq_answer_(.+)/, async (ctx) => {
 });
 
 bot.action('contact', async (ctx) => {
-  const text = `📞 *Наши контакты*\n\n📱 Телефон: ${process.env.MANAGER_PHONE}\n\nВы можете написать менеджеру напрямую или оставить заявку, и мы свяжемся с вами!`;
-  await ctx.editMessageText(text, { parse_mode: 'Markdown', ...contactKeyboard });
+  const managerId = process.env.MANAGER_ID || '8694019199';
+  const text = `📞 *Наши контакты*\n\n` +
+    `📱 Телефон: ${process.env.MANAGER_PHONE}\n` +
+    `💬 Telegram: [Написать менеджеру](tg://user?id=${managerId})\n\n` +
+    `Вы также можете оставить заявку на бронь, и мы свяжемся с вами!`;
+  
+  await ctx.editMessageText(text, { 
+    parse_mode: 'Markdown', 
+    ...contactKeyboard 
+  });
 });
 
 bot.action('about', async (ctx) => {
