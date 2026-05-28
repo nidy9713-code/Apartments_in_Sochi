@@ -9,6 +9,7 @@ export const mainKeyboard = Markup.inlineKeyboard([
 ], { columns: 1 });
 
 export const contactKeyboard = Markup.inlineKeyboard([
+  [Markup.button.url('💬 Написать менеджеру', `tg://user?id=8694019199`)],
   [Markup.button.callback('📝 Оставить заявку на бронь', 'create_booking')],
   [Markup.button.callback('⬅️ Назад', 'start')],
 ]);

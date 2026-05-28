@@ -487,8 +487,16 @@ bot.action('contact', async (ctx) => {
   
   await ctx.editMessageText(text, { 
     parse_mode: 'Markdown', 
-    ...contactKeyboard 
+    ...Markup.inlineKeyboard([
+      [Markup.button.url('💬 Написать менеджеру', `tg://user?id=${managerId}`)],
+      [Markup.button.callback('📝 Оставить заявку на бронь', 'create_booking')],
+      [Markup.button.callback('⬅️ Назад', 'start')],
+    ])
   });
+});
+
+bot.action('create_booking', (ctx) => {
+  return ctx.scene.enter('booking_wizard');
 });
 
 bot.action('about', async (ctx) => {
