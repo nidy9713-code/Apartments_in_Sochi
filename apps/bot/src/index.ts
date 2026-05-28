@@ -479,8 +479,9 @@ bot.action(/faq_answer_(.+)/, async (ctx) => {
 
 bot.action('contact', async (ctx) => {
   const managerId = process.env.MANAGER_ID || '8694019199';
+  const managerPhone = process.env.MANAGER_PHONE || '+79952648055';
   const text = `📞 *Наши контакты*\n\n` +
-    `📱 Телефон: ${process.env.MANAGER_PHONE}\n` +
+    `📱 Телефон: ${managerPhone}\n` +
     `💬 Telegram: [Написать менеджеру](tg://user?id=${managerId})\n\n` +
     `Вы также можете оставить заявку на бронь, и мы свяжемся с вами!`;
   
