@@ -485,17 +485,34 @@ bot.action('contact', async (ctx) => {
     `💬 Telegram: [Написать менеджеру](tg://user?id=${managerId})\n\n` +
     `Вы также можете оставить заявку на бронь, и мы свяжемся с вами!`;
   
-  await ctx.editMessageText(text, { 
-    parse_mode: 'Markdown', 
-    ...Markup.inlineKeyboard([
-      [Markup.button.url('💬 Написать менеджеру', `tg://user?id=${managerId}`)],
-      [Markup.button.callback('📝 Оставить заявку на бронь', 'create_booking')],
-      [Markup.button.callback('⬅️ Назад', 'start')],
-    ])
-  });
+  // Clean phone number for t.me link (remove + and spaces)
+  const cleanPhone = managerPhone.replace(/\D/g, '');
+  
+  try {
+    await ctx.editMessageText(text, { 
+      parse_mode: 'Markdown', 
+      ...Markup.inlineKeyboard([
+        [Markup.button.url('💬 Написать менеджеру', `https://t.me/+${cleanPhone}`)],
+        [Markup.button.callback('📝 Оставить заявку на бронь', 'create_booking')],
+        [Markup.button.callback('⬅️ Назад', 'start')],
+      ])
+    });
+  } catch (error) {
+    console.error('Error editing message with contact keyboard:', error);
+    // Fallback: send as new message if edit fails
+    await ctx.reply(text, { 
+      parse_mode: 'Markdown', 
+      ...Markup.inlineKeyboard([
+        [Markup.button.url('💬 Написать менеджеру', `https://t.me/+${cleanPhone}`)],
+        [Markup.button.callback('📝 Оставить заявку на бронь', 'create_booking')],
+        [Markup.button.callback('⬅️ Назад', 'start')],
+      ])
+    });
+  }
 });
 
-bot.action('create_booking', (ctx) => {
+bot.action('create_booking', async (ctx) => {
+  await ctx.answerCbQuery();
   return ctx.scene.enter('booking_wizard');
 });
 
